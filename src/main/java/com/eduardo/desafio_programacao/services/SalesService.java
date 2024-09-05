@@ -22,10 +22,6 @@ public class SalesService {
 	@Autowired
 	private SalesRepository salesRepository;
 
-	public List<Sales> listSales() {
-		return salesRepository.findAll();
-	}
-
 	private List<Sales> readDataFromFile(MultipartFile file) {
 		try {
 			InputStream input = file.getInputStream();
