@@ -21,7 +21,7 @@ public class SalesController {
 
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<SummarizedSalesDTO> importSales(@RequestParam("arquivo") MultipartFile file) {
-		SummarizedSalesDTO resume = salesService.saveDataFromFile(file);
+		SummarizedSalesDTO resume = this.salesService.saveDataFromFile(file);
 		return ResponseEntity.ok().body(resume);
 	}
 
