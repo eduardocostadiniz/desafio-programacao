@@ -25,7 +25,7 @@ public class UsersService {
 	@Autowired
 	private TokenService tokenService;
 
-	public void create(UserRequestDTO user) {
+	public Users create(UserRequestDTO user) {
 		if (this.usersRepository.findByEmail(user.email()) != null) {
 			throw new UserAlreadyExistException("Usuário já existe");
 		}
@@ -34,7 +34,7 @@ public class UsersService {
 		Users createdUser = new Users();
 		createdUser.setEmail(user.email());
 		createdUser.setPassword(encryptedPassword);
-		this.usersRepository.save(createdUser);
+		return this.usersRepository.save(createdUser);
 	}
 
 	public LoginResponseDTO login(UserRequestDTO user) {
