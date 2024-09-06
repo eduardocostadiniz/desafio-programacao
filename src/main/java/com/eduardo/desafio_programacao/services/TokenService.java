@@ -11,6 +11,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.eduardo.desafio_programacao.exceptions.JwtTokenManipulationException;
 import com.eduardo.desafio_programacao.models.Users;
 
 @Service
@@ -32,7 +33,7 @@ public class TokenService {
 			return token;
 		} catch (JWTCreationException e) {
 			e.printStackTrace();
-			throw new RuntimeException("Erro ao gerar o token");
+			throw new JwtTokenManipulationException("Erro ao gerar o token");
 		}
 	}
 	
@@ -46,7 +47,7 @@ public class TokenService {
 				.getSubject();
 		} catch (JWTVerificationException e) {
 			e.printStackTrace();
-			throw new RuntimeException("Erro ao validar o token");
+			throw new JwtTokenManipulationException("Erro ao validar o token");
 		}
 	}
 

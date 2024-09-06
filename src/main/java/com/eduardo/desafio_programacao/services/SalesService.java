@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.eduardo.desafio_programacao.exceptions.TransformDataException;
 import com.eduardo.desafio_programacao.models.Sales;
 import com.eduardo.desafio_programacao.models.SummarizedSalesDTO;
 import com.eduardo.desafio_programacao.repositories.SalesRepository;
@@ -32,8 +33,7 @@ public class SalesService {
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			// TODO: melhorar a tipagem da exceção
-			throw new RuntimeException("Erro ao transformar o arquivo!");
+			throw new TransformDataException("Erro ao transformar o arquivo!");
 		}
 	}
 
@@ -50,15 +50,13 @@ public class SalesService {
 
 	private SummarizedSalesDTO summarizeInsertedData(List<Sales> sales) {
 		return new SummarizedSalesDTO(
-			sales.stream()
-				.map(sale -> sale.getItemPrice().multiply(new BigDecimal(sale.getPurchaseCount())))
-				.reduce(BigDecimal.ZERO, (total, element) -> total.add(element))
-		);
+				sales.stream().map(sale -> sale.getItemPrice().multiply(new BigDecimal(sale.getPurchaseCount())))
+						.reduce(BigDecimal.ZERO, (total, element) -> total.add(element)));
 	}
 
 	public SummarizedSalesDTO saveDataFromFile(MultipartFile file) {
 		List<Sales> sales = this.readDataFromFile(file);
-		salesRepository.saveAll(sales);	
+		salesRepository.saveAll(sales);
 		return this.summarizeInsertedData(sales);
 	}
 
