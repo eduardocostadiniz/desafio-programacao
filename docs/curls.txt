@@ -1,0 +1,23 @@
+===== CRIAR USUÁRIO =====
+
+curl --location 'http://localhost:8080/users/create' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "user1@dev.com",
+    "password": "12345"
+}'
+
+===== LOGIN USUÁRIO =====
+
+curl --location 'http://localhost:8080/users/login' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "user1@dev.com",
+    "password": "12345"
+}'
+
+===== UPLOAD ARQUIVO =====
+
+curl --location 'http://localhost:8080/sales' \
+--header 'Authorization: Bearer <tokenGerado>' \
+--form 'arquivo=@"/path/to/file/example.ext"'

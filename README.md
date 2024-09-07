@@ -1,45 +1,42 @@
-# Desafio de programação 1
-A idéia deste desafio é nos permitir avaliar melhor as habilidades de candidatos à vagas de programador, de vários níveis.
+# Desafio de Programação
 
-Este desafio deve ser feito por você em sua casa. Gaste o tempo que você quiser, porém normalmente você não deve precisar de mais do que algumas horas.
+Este projeto tem como intuito, importar dados através de upload de arquivo e persistir na base de dados.
 
-## Instruções de entrega do desafio
-1. Primeiro, faça um fork deste projeto para sua conta no Github (crie uma se você não possuir).
-1. Em seguida, implemente o projeto tal qual descrito abaixo, em seu próprio fork.
-1. Por fim, empurre todas as suas alterações para o seu fork no Github e envie um pull request para este repositório original. Se você já entrou em contato com alguém da Luizalabs sobre uma vaga, avise também essa pessoa, informando o seu usuário no Github.
+### *Principais ferramentas*
 
-## Instruções alternativas de entrega do desafio (caso você não queira que sua submissão seja pública)
-1. Faça um clone deste repositório.
-1. Em seguida, implemente o projeto tal qual descrito abaixo, em seu clone local.
-1. Por fim, envie via email um arquivo patch para seu contato na Luizalabs.
+**Linguagem Principal:** Java (JDK 21)  
+**Framework:** Spring Boot 3  
+**Banco de Dados:** PostgreSQL  
+**Migrações do Banco de Dados:** Flyway  
+**Gerenciador de Dependências/Build:** Gradle  
 
-## Descrição do projeto
-Você recebeu um arquivo de texto com os dados de vendas da empresa. Precisamos criar uma maneira para que estes dados sejam importados para um banco de dados.
+### *Configuração do Ambiente de Desenvolvimento*
 
-Sua tarefa é criar uma interface web que aceite upload de arquivos, normalize os dados e armazene-os em um banco de dados relacional.
+###### JAVA
+Baixar e instalar o Java JDK versão 21 [DOWNLOAD](https://www.oracle.com/br/java/technologies/downloads/#java21)  
 
-Sua aplicação web DEVE:
+###### POSTGRESQL
 
-1. Aceitar (via um formulário) o upload de arquivos separados por TAB com as seguintes colunas: purchaser name, item description, item price, purchase count, merchant address, merchant name. Você pode assumir que as colunas estarão sempre nesta ordem, que sempre haverá dados em cada coluna, e que sempre haverá uma linha de cabeçalho. Um arquivo de exemplo chamado example_input.tab está incluído neste repositório.
-1. Interpretar ("parsear") o arquivo recebido, normalizar os dados, e salvar corretamente a informação em um banco de dados relacional.
-1. Exibir a receita bruta total representada pelo arquivo enviado após o upload + parser.
-1. Ser escrita obrigatoriamente em Java com Spring Boot (ou outra linguagem especificada para a vaga se for o caso).
-1. Ser simples de configurar e rodar, funcionando em ambiente compatível com Unix (Linux ou Mac OS X). Ela deve utilizar apenas linguagens e bibliotecas livres ou gratuitas.
+Utilizar o docker compose para criar um container PostgreSQL local. Na raiz do projeto existe um arquivo `docker-compose.yml` que configura o banco de dados para ser utilizado localmente, basta executar o comando: 
+```sh
+$ docker-compose up -d
+```
 
-Sua aplicação web não precisa:
+###### Variáveis de Ambiente do Projeto
+Para executar o projeto, precisaremos de preencher algumas variáveis de ambiente. Existe um arquivo modelo chamado `.env.sample`, nele contém as variáveis que precisam ser preenchidas. Basta duplicar esse arquivo e renomeá-lo para `.env` que o Spring Boot vai procurar os valores e preencher no arquivo `application.properties`. Exemplo de preenchimento:  
 
-1. Lidar com autenticação ou autorização (pontos extras se ela fizer, mais pontos extras se a autenticação for feita via OAuth).
-1. Ter uma aparência bonita.
+```.env
+DESAFIO_PROGRAMACAO_API_DB_URL=jdbc:postgresql://host:port/db-name
+DESAFIO_PROGRAMACAO_API_DB_USER=db-user
+DESAFIO_PROGRAMACAO_API_DB_PWD=db-password
+DESAFIO_PROGRAMACAO_JPA_SHOW_SQL=true
+DESAFIO_PROGRAMACAO_API_SECRET=my-secret
+```
 
-## Avaliação
-Seu projeto será avaliado de acordo com os seguintes critérios. 
+###### Teste das API's
 
-1. Sua aplicação preenche os requerimentos básicos?
-1. Você documentou a maneira de configurar o ambiente e rodar sua aplicação?
-1. Você seguiu as instruções de envio do desafio?
+O endpoint que recebe o upload do arquivo de vendas é protegido, para executar ele é necessário um token de acesso.
+Para gerar o token basta cadastrar um usuário `/users/create`, gerar um token através do login `/users/login` e depois anexar o token na requisição de upload `/sales`.
 
-Adicionalmente, tentaremos verificar a sua familiarização com as bibliotecas padrões (standard libs), bem como sua experiência com programação orientada a objetos a partir da estrutura de seu projeto.
-
-### Referência
-
-Este desafio foi baseado neste outro desafio: https://github.com/lschallenges/data-engineering
+> OBS.: Na pasta docs, existe as curl's para esses endpoints, assim é possível importar em algumas ferramentas de teste de API como Postman, Insomnia, etc.
+  
